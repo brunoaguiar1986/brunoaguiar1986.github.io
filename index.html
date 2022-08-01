@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <title>Super Mario Jump</title>
+</head>
+
+<body>
+    <div class="game-board">
+
+        <img src="images/pipe.png" class="pipe">
+        <img src="images/mario.gif" class="mario">
+        <img src="images/clouds.png" class="clouds">
+
+    </div>
+
+    <div class="jogar_intro">
+        <div class="comojogar">
+            <img src="images/SuperMarioWorld.jpg" alt="">
+        </div>
+
+        <div class="intro_atualizar">
+            <h2>Para jogar, aperte qualquer tecla!</h2>
+            <input class="atualizar" type="button" value="Reiniciar jogo" onclick="history.go(0)">
+        </div>
+    </div>
+
+    <input type="button" onkeydown="myFunction()" autofocus class="botao">
+
+    <script>
+        const mario = document.querySelector('.mario');
+        const pipe = document.querySelector('.pipe');
+        var sound1 = new Audio('music/super_mario_theme_song.mp3');
+        var sound2 = new Audio('music/mario-game-over.mp3');
+
+        function myFunction() {
+            sound1.play();
+        }
+
+        const jump = () => {
+            mario.classList.add('jump');
+
+            setTimeout(() => {
+
+                mario.classList.remove('jump');
+
+            }, 500);
+        }
+
+        const loop = setInterval(() => {
+
+            const pipePosition = pipe.offsetLeft;
+            const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+
+            if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 80) {
+
+                pipe.style.animation = 'none';
+                pipe.style.left = `${pipePosition}px`;
+
+                mario.style.animation = 'none';
+                mario.style.bottom = `${marioPosition}px`;
+
+                mario.src = 'images/game-over.png';
+                mario.style.width = '75px';
+                mario.style.marginLeft = '50px';
+                sound1.pause();
+                sound2.play();
+
+
+                clearInterval(loop);
+            }
+
+        }, 10);
+
+        document.addEventListener('keydown', jump);
+
+    </script>
+
+</body>
+
+</html>
